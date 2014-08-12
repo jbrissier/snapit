@@ -5,16 +5,20 @@
 /example usage
 -block 'main-col'
     .well
-        %h1 Hello Django
+        %button#upload.col-xs-12.btn.btn-primary.btn-lg
+            Upload
+        %input#file{type:'file',accept:'image/*', capture:'camera'}
 
+        /type="file" accept="image/*" id="file" capture="camera"
 
--block 'right-col'
-    .well
-        %h1
-            Test
+    :javascript
+        $('#file').hide()
+        $(document).ready(function(){
 
+        $('#upload').click(function(){
+            $('#file').click()
+            var formData = new FormData($('form')[0]);
+            console.log(formData)
 
--block 'footer'
-    .well
-        %p
-            This is a base view
+        });
+        });
