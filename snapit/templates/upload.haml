@@ -9,12 +9,14 @@
 
 
         /%
-
-    %form.well{action:'{%url "snapit_upload"%}', method:'POST'}
+    - if thanks
+        .alert.alert.info
+            {{thanks}}
+    %form.well{action:'{%url "snapit_upload"%}', method:'POST', enctype:"multipart/form-data"}
         {{form.as_p}}
         /%input{type:'file',accept:'image/*', capture:'camera', name:'{{form.file.html_name}}', id:'{{form.file.id_for_label}}'}
         {% csrf_token %}
-        %button#upload{type:'submit'}
+        %button#upload.btn.btn-primary.btn-large.form-control{type:'submit'}
             Upload
 
 
@@ -23,5 +25,5 @@
         /type="file" accept="image/*" id="file" capture="camera"
 
 
-    /%script{type:'text/javascript', src:'{%static "js/main.js" %}'}
+    %script{type:'text/javascript', src:'{%static "js/main.js" %}'}
 
