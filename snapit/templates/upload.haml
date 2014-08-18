@@ -1,0 +1,27 @@
+{%extends '__l_base.html' %}
+{% load staticfiles %}
+-block 'title'
+    {{block.super}} | Sample Page
+
+/example usage
+-block 'main-col'
+
+
+
+        /%
+
+    %form.well{action:'{%url "snapit_upload"%}', method:'POST'}
+        {{form.as_p}}
+        /%input{type:'file',accept:'image/*', capture:'camera', name:'{{form.file.html_name}}', id:'{{form.file.id_for_label}}'}
+        {% csrf_token %}
+        %button#upload{type:'submit'}
+            Upload
+
+
+
+
+        /type="file" accept="image/*" id="file" capture="camera"
+
+
+    /%script{type:'text/javascript', src:'{%static "js/main.js" %}'}
+

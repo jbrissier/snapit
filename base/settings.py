@@ -12,12 +12,16 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'database.db',                      # Or path to database file if using sqlite3.
+        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        # Or path to database file if using sqlite3.
+        'NAME': 'database.db',
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        # Empty for localhost through domain sockets or '127.0.0.1' for
+        # localhost through TCP.
+        'HOST': '',
         'PORT': '',                      # Set to empty string for default.
     }
 }
@@ -85,6 +89,18 @@ STATICFILES_FINDERS = (
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+   "django.core.context_processors.csrf",
+   "django.contrib.auth.context_processors.auth",
+   "django.core.context_processors.debug",
+   "django.core.context_processors.i18n",
+   "django.core.context_processors.media",
+   "django.core.context_processors.static",
+   "django.core.context_processors.tz",
+   "django.contrib.messages.context_processors.messages"
+                                )
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'THISISASTUPIDSECRETKY'
 
@@ -130,7 +146,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
-INTERNAL_APPS = []
+INTERNAL_APPS = ['snapit', ]
 
 EXTERNAL_APPS = [
     'django.contrib.auth',
