@@ -99,7 +99,15 @@ textarea {
 
 
 
+span.glyphicon.glyphicon-camera {
+vertical-align: text-top;
+}
 
+button#upload {
+font-size: 22em;
+width: 100%;
+vertical-align: top;
+}
 
 
 
