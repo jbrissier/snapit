@@ -3,3 +3,46 @@
 -block 'main-col'
     .image-container
         %img{src:"{%static 'img/camera.png' %}"}
+
+
+    :javascript
+        $(document).ready(function(){
+
+           window.setInterval("loadImage()", 5000);
+
+
+        });
+
+        var count = 0;
+        function loadImage(){
+            count++;
+
+            if(count % 2 ==0){
+
+
+            }
+
+            else{
+
+            }
+
+
+        }
+
+        function changeImage(src){
+            var img = $('.image-container img');
+            img.addClass('magictime puffOut');
+
+            setTimeout(function(){
+                img.attr('src',src)
+            }, 500);
+
+
+            setTimeout(function(){
+                img.removeClass('magictime puffOut');
+                img.addClass('magictime puffIn');
+            }, 500);
+
+
+
+        }
