@@ -29,5 +29,5 @@ def upload_file(request):
 
 
 def view_images(request):
-    pass
+    return render_to_response('viewer.html', RequestContext(request, {}))
 
