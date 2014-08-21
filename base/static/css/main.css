@@ -109,7 +109,9 @@ width: 100%;
 vertical-align: top;
 }
 
-
+body{
+    background-image: url('../img/pattern.png');
+}
 
 
 

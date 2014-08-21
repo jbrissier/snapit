@@ -25,3 +25,9 @@ def upload_file(request):
     else:
         form = UploadFileForm()
     return render_to_response('upload.html', {'form': form}, RequestContext(request, {}))
+
+
+
+def view_images(request):
+    pass
+
