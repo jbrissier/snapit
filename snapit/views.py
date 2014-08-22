@@ -8,6 +8,11 @@ import os
 COUNT = 0
 
 
+def get_latest_picture(self):
+    pass
+
+
+
 def handle_uploaded_file(f):
     #import pdb; pdb.set_trace()
     #todo save this in the db
