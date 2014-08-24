@@ -1,15 +1,19 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from forms import UploadFileForm
 from django.template import RequestContext
 from django.conf import settings
 import os
-
+from models import ImageManager
 COUNT = 0
-
+image_manager = ImageManager()
 
 def get_latest_picture(self):
-    pass
+    image = image_manager.get_image()
+    if image:
+        return HttpResponse(image.file_path)
+    else:
+        return HttpResponse(None)
 
 
 
@@ -18,12 +22,12 @@ def handle_uploaded_file(f):
     #todo save this in the db
     global COUNT
     COUNT += 1
-    wp = os.path.join(settings.MEDIA_ROOT, str(COUNT) + ".png")
+    wp = os.path.join(settings.MEDIA_ROOT, f._name)
 
     with open(wp, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-
+    image_manager.add_image(wp)
 
 def upload_file(request):
     if request.method == 'POST':
