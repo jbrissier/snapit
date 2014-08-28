@@ -5,7 +5,8 @@ from django.template import RequestContext
 from django.conf import settings
 import os
 from models import ImageManager
-COUNT = 0
+
+
 image_manager = ImageManager()
 
 def get_latest_picture(self):
@@ -20,8 +21,6 @@ def get_latest_picture(self):
 def handle_uploaded_file(f):
     #import pdb; pdb.set_trace()
     #todo save this in the db
-    global COUNT
-    COUNT += 1
 
     if not os.path.exists(settings.MEDIA_ROOT):
         os.mkdir(settings.MEDIA_ROOT)
