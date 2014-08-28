@@ -22,6 +22,10 @@ def handle_uploaded_file(f):
     #todo save this in the db
     global COUNT
     COUNT += 1
+
+    if not os.path.exists(settings.MEDIA_ROOT):
+        os.mkdir(settings.MEDIA_ROOT)
+
     wp = os.path.join(settings.MEDIA_ROOT, f._name)
 
     with open(wp, 'wb+') as destination:
