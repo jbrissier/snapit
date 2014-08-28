@@ -9,6 +9,7 @@ from models import ImageManager
 
 image_manager = ImageManager()
 
+
 def get_latest_picture(self):
     image = image_manager.get_image()
     if image:
@@ -17,10 +18,9 @@ def get_latest_picture(self):
         return HttpResponse(None)
 
 
-
 def handle_uploaded_file(f):
     #import pdb; pdb.set_trace()
-    #todo save this in the db
+    # todo save this in the db
 
     if not os.path.exists(settings.MEDIA_ROOT):
         os.mkdir(settings.MEDIA_ROOT)
@@ -31,6 +31,7 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
     image_manager.add_image(wp)
+
 
 def upload_file(request):
     if request.method == 'POST':
