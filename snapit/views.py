@@ -41,7 +41,7 @@ def upload_file(request):
             handle_uploaded_file(request.FILES['file'])
             # new form
             form = UploadFileForm()
-            return render_to_response('upload.html', {'form': form, 'thanks': 'Danke'}, RequestContext(request, {}))
+            return render_to_response('upload.html', {'form': form, 'thanks': 'Danke, Bild wird gleich angezeigt'}, RequestContext(request, {}))
         else:
             print 'form not valid'
     else:
