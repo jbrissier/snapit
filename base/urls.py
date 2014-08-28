@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.conf import settings
 
 from snapit.views import upload_file, view_images, get_latest_picture
 
@@ -15,3 +16,12 @@ urlpatterns = patterns('',
     url(r'^view/', view_images, name="snapid_view"),
     url(r'^admin/', include(admin.site.urls)),
 )
+
+
+
+
+if settings.DEBUG:
+    # static files (images, css, javascript, etc.)
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': settings.MEDIA_ROOT}))

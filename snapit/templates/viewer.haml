@@ -6,25 +6,31 @@
 
 
     :javascript
+        var url = '{%url 'snapit_picture' %}'
+        var image = ''
         $(document).ready(function(){
 
-           window.setInterval("loadImage()", 5000);
+           window.setInterval("loadImage()", 2000);
 
 
         });
 
         var count = 0;
         function loadImage(){
-            count++;
-
-            if(count % 2 ==0){
 
 
-            }
+            $.ajax({
+                url:url,
+                success: function(data){
+                    if(image!=data){
+                        image = data;
+                        changeImage('/media/'+data);
+                    }
 
-            else{
+                }
 
-            }
+
+            });
 
 
         }

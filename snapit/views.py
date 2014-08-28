@@ -13,7 +13,7 @@ image_manager = ImageManager()
 def get_latest_picture(self):
     image = image_manager.get_image()
     if image:
-        return HttpResponse(image.file_path)
+        return HttpResponse(os.path.relpath(image.file_path,settings.MEDIA_ROOT))
     else:
         return HttpResponse(None)
 

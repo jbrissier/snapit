@@ -18,7 +18,7 @@ class ImageManager(object):
         self.change_time = datetime.now()
         self.request_time = datetime.now()
         self.last_image = None
-
+        self.load_images_from_db()
 
     def load_images_from_db(self):
         images = ImageUpload.objects.filter(displayed=False)
@@ -36,6 +36,9 @@ class ImageManager(object):
 
 
     def get_image(self):
+
+        #import pdb; pdb.set_trace();
+
         self.request_time = datetime.now()
 
         if not self.last_image:
@@ -47,7 +50,7 @@ class ImageManager(object):
 
 
         # task done is every x seconds
-        if self.change_time - self.request_time > self.change_interval:
+        if self.request_time - self.change_time > self.change_interval:
             try:
                 self.last_image =  self.imageQueue.get_nowait()
 
