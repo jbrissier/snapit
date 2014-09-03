@@ -30,7 +30,7 @@ def handle_uploaded_file(f):
     with open(wp, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-    image_manager.add_image(wp)
+    #image_manager.add_image(wp)
 
 
 def upload_file(request):
