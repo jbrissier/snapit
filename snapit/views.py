@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.conf import settings
 import os
 from models import ImageManager
-
+import uuid
 
 image_manager = ImageManager()
 
@@ -26,6 +26,12 @@ def handle_uploaded_file(f):
         os.mkdir(settings.MEDIA_ROOT)
 
     wp = os.path.join(settings.MEDIA_ROOT, f._name)
+
+    if os.path.exists(wp):
+        uid = uuid.uuid4()
+        name, extention = os.path.splitext(wp)
+        wp = os.path.join(settings.MEDIA_ROOT, str(uid)+"."+extention)
+
 
     with open(wp, 'wb+') as destination:
         for chunk in f.chunks():
