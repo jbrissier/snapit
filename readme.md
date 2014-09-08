@@ -1,12 +1,12 @@
-# Snapit (new name requiered) 
+# Snapit (new name required)
 
 Simple mobile file upload.
 
 ## Run using Docker
 
-Build Docker image 
+Build Docker image
 
-    docker build -t 'snapit' . 
+    docker build -t 'snapit' .
 
 Run on Docker
 
