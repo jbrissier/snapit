@@ -41,3 +41,4 @@ class Upload
     #init_events: ->
 $ ->
     new Upload()
+    $('.alert').delay(1000).fadeOut('slow')

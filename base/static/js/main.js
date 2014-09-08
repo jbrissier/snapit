@@ -50,7 +50,8 @@
   })();
 
   $(function() {
-    return new Upload();
+    new Upload();
+    return $('.alert').delay(1000).fadeOut('slow');
   });
 
 }).call(this);
