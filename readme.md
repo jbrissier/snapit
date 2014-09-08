@@ -1,8 +1,14 @@
-# Bootstrap
+# Snapit (new name requiered) 
 
-This a boostrap Django project.
-It is not ready for production
+Simple mobile file upload.
 
+## Run using Docker
 
-## Todo:
- - Change secret key in you base/settings.py
+Build Docker image 
+
+    docker build -t 'snapit' . 
+
+Run on Docker
+
+    docker run -t -i -p 80:80 -v /path/for/the/pictures:/data snapit
+
