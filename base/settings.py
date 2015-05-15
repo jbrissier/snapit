@@ -165,6 +165,7 @@ EXTERNAL_APPS = [
 ]
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
