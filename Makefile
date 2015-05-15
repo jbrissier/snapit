@@ -1,5 +1,8 @@
 project = base
-app?=zodiac
+app?=
+
+ev = env
+env= env/bin/activate
 
 dumpdata:
 	python2.7 ./manage.py dumpdata --indent 4 --natural auth --exclude auth.permission > $(project)/fixtures/bootstrap_auth.json
@@ -10,22 +13,27 @@ loaddata:
 	python2.7 manage.py loaddata $(project)/fixtures/bootstrap_auth.json
 	python2.7 manage.py loaddata $(project)/fixtures/bootstrap_sites.json
 
-syncdb:
-	python2.7 manage.py syncdb --all --noinput
-	python2.7 manage.py migrate --fake
+mm:
+	. $(env); python2.7 manage.py makemigrations
+	. $(env); python2.7 manage.py migrate
 
-build: syncdb loaddata
+create-env:
+	virtualenv env
+	. $(env); pip install -r requirements.txt
+
+first-build: create-env mm
+
 
 flush:
-	python2.7 manage.py flush --noinput
+	. $(env); python2.7 manage.py flush --noinput
 
 rebuild: flush build
 
 run:
-	python manage.py runserver
+	. $(env); python manage.py runserver
 
 pip:
-	pip install -r requirements.txt
+	. $(env); pip install -r requirements.txt
 
 test:
 	py.test $(app)
