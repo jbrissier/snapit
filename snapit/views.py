@@ -4,16 +4,17 @@ from forms import UploadFileForm
 from django.template import RequestContext
 from django.conf import settings
 import os
-from models import ImageManager
+from models import ImageManager, ImageUpload
 import uuid
 
 image_manager = ImageManager()
 
 
 def get_latest_picture(self):
+
     image = image_manager.get_image()
     if image:
-        return HttpResponse(os.path.relpath(image.file_path,settings.MEDIA_ROOT))
+        return HttpResponse(os.path.relpath(image.file_path, settings.MEDIA_ROOT))
     else:
         return HttpResponse(None)
 
@@ -30,13 +31,15 @@ def handle_uploaded_file(f):
     if os.path.exists(wp):
         uid = uuid.uuid4()
         name, extention = os.path.splitext(wp)
-        wp = os.path.join(settings.MEDIA_ROOT, str(uid)+"."+extention)
-
+        wp = os.path.join(settings.MEDIA_ROOT, str(uid) + "." + extention)
 
     with open(wp, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-    #image_manager.add_image(wp)
+
+    upload = ImageUpload()
+    upload.file_path = wp
+    upload.save()
 
 
 def upload_file(request):
