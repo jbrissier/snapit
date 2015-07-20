@@ -13,7 +13,7 @@ image_manager = ImageManager()
 def get_latest_picture(self):
     image = image_manager.get_image()
     if image:
-        return HttpResponse(os.path.relpath(image.file_path,settings.MEDIA_ROOT))
+        return HttpResponse(os.path.relpath(image.file_path, settings.MEDIA_ROOT))
     else:
         return HttpResponse(None)
 
@@ -30,13 +30,31 @@ def handle_uploaded_file(f):
     if os.path.exists(wp):
         uid = uuid.uuid4()
         name, extention = os.path.splitext(wp)
-        wp = os.path.join(settings.MEDIA_ROOT, str(uid)+"."+extention)
+        wp = os.path.join(settings.MEDIA_ROOT, str(uid) + extention)
 
+    from io import BytesIO
+    from PIL import Image
 
-    with open(wp, 'wb+') as destination:
+    with BytesIO() as destination:
         for chunk in f.chunks():
             destination.write(chunk)
-    #image_manager.add_image(wp)
+
+        image = Image.open(destination)
+
+        exif = image._getexif()
+        rotations = {
+            1: 0,
+            3: -180,
+            8: -270,
+            6: -90,
+        }
+        exif_rt = exif.get(274, None)
+        if exif_rt:
+            image = image.rotate(rotations[exif_rt])
+
+        image.save(wp)
+
+    image_manager.add_image(wp)
 
 
 def upload_file(request):

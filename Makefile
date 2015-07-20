@@ -38,3 +38,6 @@ pip:
 test:
 	py.test $(app)
 	#./manage.py test $(app) -v 2
+
+shell:
+	. $(env); python manage.py shell

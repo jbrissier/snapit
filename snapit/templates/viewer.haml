@@ -1,8 +1,8 @@
-{%extends '__l_base.html' %}
+{%extends '__base.html' %}
 {% load staticfiles %}
--block 'main-col'
+-block 'content'
     .image-container
-        %img{src:"{%static 'img/camera.png' %}"}
+        %img{src:"", data-adaptive-background:"", }
 
 
     :javascript
@@ -10,10 +10,13 @@
         var image = ''
         $(document).ready(function(){
 
-           window.setInterval("loadImage()", 2000);
+            window.setInterval("loadImage()", 5000);
+            $('.image-container').height(window.innerHeight);
 
 
         });
+
+
 
         var count = 0;
         function loadImage(){
@@ -36,6 +39,9 @@
         }
 
         function changeImage(src){
+            $('.image-container img').css('max-height', window.innerHeight);
+
+           //$('body').css({'background-image': "url('"+ src +"')" , 'background-size':'cover'})
             var img = $('.image-container img');
             img.addClass('magictime puffOut');
 
@@ -47,7 +53,10 @@
             setTimeout(function(){
                 img.removeClass('magictime puffOut');
                 img.addClass('magictime puffIn');
+                $.adaptiveBackground.run();
             }, 500);
+
+
 
 
 
