@@ -35,26 +35,26 @@ def handle_uploaded_file(f):
         name, extention = os.path.splitext(wp)
         wp = os.path.join(settings.MEDIA_ROOT, str(uid) + extention)
 
-
-
     with BytesIO() as destination:
         for chunk in f.chunks():
             destination.write(chunk)
         upload = ImageUpload()
         upload.file_path = wp
 
-
         image = Image.open(destination)
-        exif = image._getexif()
-        rotations = {
-            1: 0,
-            3: -180,
-            8: -270,
-            6: -90,
-        }
-        exif_rt = exif.get(274, None)
-        if exif_rt:
-            image = image.rotate(rotations[exif_rt])
+        try:
+            exif = image._getexif()
+            rotations = {
+                1: 0,
+                3: -180,
+                8: -270,
+                6: -90,
+            }
+            exif_rt = exif.get(274, None)
+            if exif_rt:
+                image = image.rotate(rotations[exif_rt])
+        except AttributeError:
+            pass
 
         image.save(wp)
 
