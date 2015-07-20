@@ -22,6 +22,7 @@ class ImageUpload(models.Model):
     displayed = models.BooleanField(default=False)
 
     last_image = Image()
+    objects = models.Manager()
 
     def __unicode__(self):
         return self.file_path
