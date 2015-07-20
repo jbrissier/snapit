@@ -3,57 +3,62 @@ from django.db import models
 from Queue import Queue
 # Create your models here.
 
+
+class Image(models.Manager):
+
+    def get_queryset(self):
+        qs = super(Image, self).get_queryset()
+        im = qs.filter(displayed=False).order_by('upload_time')
+        if im.count() > 0:
+            return im
+        else:
+            return qs.order_by('?')
+
+
 class ImageUpload(models.Model):
     file_path = models.CharField(max_length=512)
-    upload_time = models.TimeField(auto_now_add = True)
+    upload_time = models.TimeField(auto_now_add=True)
     display_time = models.TimeField(blank=True, null=True)
     displayed = models.BooleanField(default=False)
 
+    last_image = Image()
+
+    def __unicode__(self):
+        return self.file_path
+
+
 
 class ImageManager(object):
-    change_interval = timedelta(seconds=10) # 10s
+    change_interval = timedelta(seconds=10)  # 10s
 
     def __init__(self):
-        self.imageQueue = Queue()
         self.change_time = datetime.now()
         self.request_time = datetime.now()
         self.last_image = None
-        self.load_images_from_db()
 
-    def load_images_from_db(self):
-        images = ImageUpload.objects.filter(displayed=False)
+    def get_new_image(self):
+        self.last_image = ImageUpload.last_image.first()
+        if self.last_image:
+            if not self.last_image.displayed:
+            # reset the timer
+            #   self.change_time = datetime.now()
+                self.last_image.displayed = True
+                self.last_image.save()
 
-        for i in images:
-            self.imageQueue.put(i)
-
-    def add_image(self, path):
-        im = ImageUpload()
-        im.file_path = path
-        im.save()
-
-        self.imageQueue.put(im)
-
-
+            return self.last_image
 
     def get_image(self):
-
-        #import pdb; pdb.set_trace();
 
         self.request_time = datetime.now()
 
         if not self.last_image:
-            try:
-                self.last_image = self.imageQueue.get_nowait()
-            except:
-                pass
-
-
+            self.get_new_image()
 
         # task done is every x seconds
         if self.request_time - self.change_time > self.change_interval:
+            print "select new image"
             try:
-                self.last_image =  self.imageQueue.get_nowait()
-
+                self.get_new_image()
                 self.change_time = self.request_time
             except:
                 return self.last_image
