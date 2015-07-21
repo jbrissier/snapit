@@ -6,6 +6,13 @@
 
 
     :javascript
+        function isiPhone(){
+            return (
+                (navigator.platform.indexOf("iPhone") != -1) ||
+                (navigator.platform.indexOf("iPod") != -1)
+            );
+        }
+
         var url = '{%url 'snapit_picture' %}'
         var image = ''
         $(document).ready(function(){
@@ -43,6 +50,14 @@
 
            //$('body').css({'background-image': "url('"+ src +"')" , 'background-size':'cover'})
             var img = $('.image-container img');
+
+            if(isiPhone()){
+                img.attr('src',src)
+                $('.image-container').height(window.innerHeight)
+                return;
+            }
+
+
             img.addClass('magictime puffOut');
 
             setTimeout(function(){
