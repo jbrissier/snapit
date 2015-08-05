@@ -41,6 +41,6 @@ ADD nginx.conf /etc/nginx/nginx.conf
 ADD nginx_default.conf /etc/nginx/sites-available/default
 EXPOSE 80
 
-RUN sed -i 's/DEBUG = True/DEBUG = False/g' base/settings.py
+#RUN sed -i 's/DEBUG = True/DEBUG = False/g' base/settings.py
 
 CMD supervisord -c /opt/supervisor.conf -n
