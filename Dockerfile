@@ -4,7 +4,7 @@ MAINTAINER jochen brissier
 RUN echo "1" > /tmp/1.txt
 
 RUN apt-get update
-RUN apt-get install -y git python-dev python-git  python-setuptools
+RUN apt-get install -y git python-dev python-git  python-setuptools libjpeg
 RUN easy_install pip
 
 #RUN pip install pyodbc==3.0.6 --allow-unverified pyodbc --allow-all-external
