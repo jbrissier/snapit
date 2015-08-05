@@ -42,5 +42,7 @@ ADD nginx_default.conf /etc/nginx/sites-available/default
 EXPOSE 80
 
 #RUN sed -i 's/DEBUG = True/DEBUG = False/g' base/settings.py
+# build database
+RUN python manage.py migrate
 
 CMD supervisord -c /opt/supervisor.conf -n
