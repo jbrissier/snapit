@@ -54,7 +54,7 @@ shell:
 docker-build: *
 	docker build -t $(tag) .
 
-docker-run:
+docker-run: docker-build
 	docker run -d --name $(name) -p 80:80 $(tag)
 
 docker-rm:
