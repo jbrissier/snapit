@@ -35,7 +35,9 @@ RUN pip install -r requirements.txt
 
 ADD . /opt/
 
-RUN python manage.py collectstatic --noinput
+RUN mkdir -p /opt/data/media
+
+RUN python manage.py collectstatic --noinput --settings base.settings.prod
 
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD nginx_default.conf /etc/nginx/sites-available/default
