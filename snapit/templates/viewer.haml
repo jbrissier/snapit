@@ -11,7 +11,7 @@
         var image = ''
         $(document).ready(function(){
 
-            window.setInterval("loadImage()", 5000);
+            window.setInterval("loadImage()", 10000);
             $('.image-container').height(window.innerHeight);
 
 
@@ -39,18 +39,14 @@
             var img = $('.image-container img');
 
 
-            img.addClass('magictime puffOut');
 
-            setTimeout(function(){
+
+
                 img.attr('src',src)
-            }, 500);
 
 
-            setTimeout(function(){
-                img.removeClass('magictime puffOut');
-                img.addClass('magictime puffIn');
-                $.adaptiveBackground.run();
-            }, 500);
+
+
 
 
         }
