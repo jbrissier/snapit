@@ -2,3 +2,4 @@ env/
 CACHE/
 database.db
 *.pyc
+.DS_Store
