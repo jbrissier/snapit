@@ -89,39 +89,39 @@ STATICFILES_FINDERS = (
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-   "django.core.context_processors.csrf",
-   "django.contrib.auth.context_processors.auth",
-   "django.core.context_processors.debug",
-   "django.core.context_processors.i18n",
-   "django.core.context_processors.media",
-   "django.core.context_processors.static",
-   "django.core.context_processors.tz",
-   "django.contrib.messages.context_processors.messages"
-                                )
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'THISISASTUPIDSECRETKY'
 
 # List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    'hamlpy.template.loaders.HamlPyFilesystemLoader',
-    'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
-    # django.template.loaders.eggs.Loader'
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ['./templates'],
+        'OPTIONS': {
+            'loaders': [
+                'hamlpy.template.loaders.HamlPyFilesystemLoader',
+                'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
 
-TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), 'templates'),
-)
+            ],
+            'context_processors': [
+                "django.template.context_processors.csrf",
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages"
+
+            ],
+        }
+    }
+]
 
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,10 +133,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'base.urls'
 
-
-TINYMCE_DEFAULT_CONFIG = {
-    'theme': "advanced",
-}
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'base.wsgi.application'
@@ -155,14 +151,26 @@ EXTERNAL_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tinymce',
     'base',
-    'compressor',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'rest_framework',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'constance',
+    'constance.backends.database',
+
 ]
+
+CONSTANCE_CONFIG = {
+    'ANIMATE_IMAGE': (False, 'Show animations'),
+    'SHOW_HINT': (False, 'Show hint'),
+    'SHOW_BACKGROUND': (False, 'Show background'),
+}
+
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
