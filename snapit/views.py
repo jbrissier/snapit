@@ -1,15 +1,48 @@
+# -*- coding: utf-8 -*-
+
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response
-from forms import UploadFileForm
+from django.shortcuts import render
 from django.template import RequestContext
 from django.conf import settings
 import os
-from models import ImageManager, ImageUpload
 import uuid
 from io import BytesIO
 from PIL import Image
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from constance import config
+from django.urls import reverse_lazy
+from django.views.generic import FormView, ListView, View, TemplateView
+
+from .models import ImageManager, ImageUpload, Message, Event
+from .forms import UploadFileForm
+
+from django.contrib import messages
+
 
 image_manager = ImageManager()
+
+
+class LatesImage(APIView):
+
+    def get(self, request):
+        message = None
+        try:
+
+            message = Message.objects.first().message
+        except:
+            pass
+
+        image = image_manager.get_image()
+        re = {
+            'image_id': image.pk,
+            'image_name': os.path.relpath(image.file_path, settings.MEDIA_ROOT),
+            'image_src': os.path.join(settings.MEDIA_URL, os.path.relpath(image.file_path, settings.MEDIA_ROOT)),
+            'interval': 10000,
+            'message': message,
+            'animate': config.ANIMATE_IMAGE,
+        }
+        return Response(re)
 
 
 def get_latest_picture(self):
@@ -22,8 +55,6 @@ def get_latest_picture(self):
 
 
 def handle_uploaded_file(f):
-    #import pdb; pdb.set_trace()
-    # todo save this in the db
 
     if not os.path.exists(settings.MEDIA_ROOT):
         os.mkdir(settings.MEDIA_ROOT)
@@ -40,6 +71,8 @@ def handle_uploaded_file(f):
             destination.write(chunk)
         upload = ImageUpload()
         upload.file_path = wp
+
+        destination.seek(0)
 
         image = Image.open(destination)
         try:
@@ -61,21 +94,52 @@ def handle_uploaded_file(f):
     upload.save()
 
 
+class EventList(ListView):
+    template_name = 'event_list.haml'
+    model = Event
+
+class UploadView(TemplateView):
+    template_name = 'upload.haml'
+    form_class = UploadFileForm
+
+
+    def get_contex_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['eventuuid'] = kwargs.get('eventuuid')
+
+        return context
+
+
+    # def get_success_url(self):
+    #     return reverse_lazy('snapit_upload')
+
+    # def get(self, *arg, **kwargs):
+    #     return HttpResponse('hello')
+
+
+
+    def form_valid(self, form):
+
+        messages.add_message(self.request, messages.INFO, 'Bild wurder erfolgreich hinzugefügt')
+        return HttpResponseRedirect(self.get_success_url())
+
+
 def upload_file(request):
     if request.method == 'POST':
-        #import pdb; pdb.set_trace()
+
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             handle_uploaded_file(request.FILES['file'])
             # new form
             form = UploadFileForm()
-            return render_to_response('upload.html', {'form': form, 'thanks': 'Danke, Bild wird gleich angezeigt'}, RequestContext(request, {}))
+            return render(request, 'upload.haml', context={'form': form, 'thanks': 'Danke, Bild wird gleich angezeigt'})
         else:
-            print 'form not valid'
+            print('not valid')
     else:
         form = UploadFileForm()
-    return render_to_response('upload.html', {'form': form}, RequestContext(request, {}))
+    return render(request, 'upload.haml', context={'form': form})
 
 
 def view_images(request):
-    return render_to_response('viewer.html', RequestContext(request, {}))
+    return render(request, 'viewer.haml')

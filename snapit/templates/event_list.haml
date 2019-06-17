@@ -1,0 +1,10 @@
+{%extends '__base.haml' %}
+{% load staticfiles %}
+
+
+-block 'content'
+    %ul
+        - for ev in object_list
+            %li
+                %a{href:"{{ev.get_absolute_url}}"}
+                    {{ev.name}} {{ev.uuid}}

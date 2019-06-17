@@ -1,7 +1,21 @@
 from datetime import datetime, timedelta
 from django.db import models
-from Queue import Queue
+import uuid
+
 # Create your models here.
+
+class Event(models.Model):
+    name = models.CharField(max_length=100)
+    uuid = models.UUIDField(default=uuid.uuid4)
+
+
+    def get_absolute_url(self):
+
+        from django.urls import reverse
+        return reverse('snapit_upload', args=[str(self.uuid)])
+
+
+
 
 
 class Image(models.Manager):
@@ -21,12 +35,20 @@ class ImageUpload(models.Model):
     display_time = models.TimeField(blank=True, null=True)
     displayed = models.BooleanField(default=False)
 
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
     last_image = Image()
     objects = models.Manager()
 
     def __unicode__(self):
         return self.file_path
 
+
+class Message(models.Model):
+    message = models.TextField(max_length=200)
+
+    def __unicode__(self):
+        return self.message
 
 
 class ImageManager(object):
@@ -57,7 +79,6 @@ class ImageManager(object):
 
         # task done is every x seconds
         if self.request_time - self.change_time > self.change_interval:
-            print "select new image"
             try:
                 self.get_new_image()
                 self.change_time = self.request_time

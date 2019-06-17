@@ -1,17 +1,32 @@
-{%extends '__base.html' %}
+{%extends '__base.haml' %}
 {% load staticfiles %}
 -block 'content'
     .image-container
         %img{src:"", data-adaptive-background:"", }
+    .message
 
 
     :javascript
-
-        var url = '{%url 'snapit_picture' %}'
+        var interval = 5000;
+        var url = '{%url 'snapit_last_picture' %}'
         var image = ''
-        $(document).ready(function(){
+        var message = $('.message').hide()
+        var imageinterval;
+        function buildInterval(){
 
-            window.setInterval("loadImage()", 10000);
+            if(imageinterval){
+                window.clearInterval(imageinterval)
+            }
+
+             window.setInterval("loadImage()", interval);
+
+        }
+
+
+
+        $(document).ready(function(){
+            loadImage();
+            buildInterval();
             $('.image-container').height(window.innerHeight);
 
 
@@ -20,33 +35,50 @@
 
         var count = 0;
         function loadImage(){
+            $.getJSON(url, function(data){
 
-            $.ajax({
-                url:url,
-                success: function(data){
-                    if(image!=data){
-                        image = data;
-                        changeImage('/media/'+data);
-                    }
+                if(image!=data.image_src){
+                        image = data.image_src;
+                        changeImage(data.image_src, data.animate);
+                }
+                if(interval != data.interval){
+                    interval = data.interval;
+                    buildInterval();
+                }
+
+                if(data.message && data.message != ""){
+                    message.show()
+                    message.html(data.message)
+                }else{
+                    message.hide()
                 }
             });
+
         }
 
-        function changeImage(src){
+        function changeImage(src, animate){
             $('.image-container img').css('max-height', window.innerHeight);
 
            //$('body').css({'background-image': "url('"+ src +"')" , 'background-size':'cover'})
             var img = $('.image-container img');
 
+            if(!animate){
+                img.attr('src',src)
+                return
+            }
 
-
-
-
+            img.addClass('magictime puffOut');
+            setTimeout(function(){
                 img.attr('src',src)
 
+            }, 500);
 
 
-
+            setTimeout(function(){
+                img.removeClass('magictime puffOut');
+                img.addClass('magictime puffIn');
+                $.adaptiveBackground.run();
+            }, 500);
 
 
         }

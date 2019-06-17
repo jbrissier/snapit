@@ -1,14 +1,15 @@
-{%extends '__l_base.html' %}
+{%extends '__l_base.haml' %}
 {% load staticfiles %}
 -block 'title'
-    Tobtina
+    SnapIt - Wall
 
 /example usage
 -block 'main-col'
 
-    - if thanks
-        .alert.alert-info
-            {{thanks}}
+    - if messages
+        - for msg in messages
+            .alert.alert-info
+                {{msg}}
 
 
     %center
@@ -21,10 +22,10 @@
 
     .row
         .col-lg-2.col-lg-offset-5.well.col-xs-10.col-xs-offset-1
-             %form{action:'{%url "snapit_upload"%}', method:'POST', enctype:"multipart/form-data"}
+             %form{action:'{%url "snapit_upload" eventuuid %}', method:'POST', enctype:"multipart/form-data"}
                 //{{form.as_p}}
-                %input{type:'file',accept:'image/*', capture:'camera', name:'{{form.file.html_name}}', id:'{{form.file.id_for_label}}'}
                 {% csrf_token %}
+                %input{type:'file', accept:'image/*',  name:'{{form.file.html_name}}', id:'{{form.file.id_for_label}}'}
 
             %a#upload.btn.btn-block.form-control{href:'#'}
                     Bilder hinzufügen
