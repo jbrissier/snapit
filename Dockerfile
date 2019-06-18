@@ -4,7 +4,7 @@ MAINTAINER Jochen Brissier
 RUN apt-get update
 RUN apt-get install -y git python3-dev python3-git  python3-setuptools python3-pip libjpeg-dev zlib1g-dev libtiff-dev
 
-RUN apt-get install -y gunicorn
+RUN pip3 install gunicorn
 RUN apt-get install -y supervisor
 
 
