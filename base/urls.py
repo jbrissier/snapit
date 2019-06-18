@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from snapit.views import upload_file, view_images, get_latest_picture, LatesImage, UploadView,EventList
+from snapit.views import ViewImages, get_latest_picture, LatesImage, UploadView,EventList
 
 admin.autodiscover()
 
@@ -15,12 +15,11 @@ urlpatterns = [
     #url(r'^$', TemplateView.as_view(template_name='home.html')),
     path(r'', EventList.as_view(), name="events"),
     path('upload/<uuid:eventuuid>/', UploadView.as_view(), name="snapit_upload"),
-    url(r'^view/image/$', get_latest_picture, name="snapit_picture"),
-    url(r'^view/last/$', LatesImage.as_view(), name="snapit_last_picture"),
-    url(r'^view/', view_images, name="snapid_view"),
-    path(r'admin/', admin.site.urls),
+    path(r'view/image/$', get_latest_picture, name="snapit_picture"),
+    path('view/last/<uuid:eventuuid>/', LatesImage.as_view(), name="snapit_last_picture"),
+    path('view/<uuid:eventuuid>/', ViewImages.as_view(), name="snapid_view"),
+    path('admin/', admin.site.urls),
 ]
-
 
 
 if settings.DEBUG:
