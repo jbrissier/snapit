@@ -7,4 +7,7 @@
         - for ev in object_list
             %li
                 %a{href:"{{ev.get_absolute_url}}"}
-                    {{ev.name}} {{ev.uuid}}
+                    Upload {{ev.name}} {{ev.uuid}}
+
+                %a{href:"{% url 'snapid_view' ev.get_eventuuid%}"}
+                    View {{ev.name}} {{ev.uuid}}
