@@ -110,7 +110,9 @@ vertical-align: top;
 }
 
 body{
-    background-image: url('../img/pattern.png');
+    /*background-image: url('../img/pattern.png');*/
+    background-color: black!important;
+    color: white!important;
 }
 
 .camera img{
@@ -118,7 +120,16 @@ body{
     max-height: 100%;
 }
 
+.qr{
+    position: absolute;
+    height: 16vh;
+    bottom: 1em;
+    right: 2em;
+}
 
+.qr img {
+    height: 16vh;
+}
 
 
 .image-container {
