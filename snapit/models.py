@@ -8,14 +8,14 @@ class Event(models.Model):
     name = models.CharField(max_length=100)
     uuid = models.UUIDField(default=uuid.uuid4)
 
+    def get_eventuuid(self):
+        return str(self.uuid)
+
 
     def get_absolute_url(self):
 
         from django.urls import reverse
         return reverse('snapit_upload', args=[str(self.uuid)])
-
-
-
 
 
 class Image(models.Manager):
@@ -59,8 +59,8 @@ class ImageManager(object):
         self.request_time = datetime.now()
         self.last_image = None
 
-    def get_new_image(self):
-        self.last_image = ImageUpload.last_image.first()
+    def get_new_image(self, event):
+        self.last_image = ImageUpload.last_image.filter(event=event).first()
         if self.last_image:
             if not self.last_image.displayed:
             # reset the timer
@@ -70,17 +70,17 @@ class ImageManager(object):
 
             return self.last_image
 
-    def get_image(self):
+    def get_image(self, event):
 
         self.request_time = datetime.now()
 
         if not self.last_image:
-            self.get_new_image()
+            self.get_new_image(event)
 
         # task done is every x seconds
         if self.request_time - self.change_time > self.change_interval:
             try:
-                self.get_new_image()
+                self.get_new_image(event)
                 self.change_time = self.request_time
             except:
                 return self.last_image
