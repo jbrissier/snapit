@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.template import RequestContext
 from django.conf import settings
@@ -11,7 +11,7 @@ from PIL import Image
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from constance import config
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, ListView, View, TemplateView
 
 from .models import ImageManager, ImageUpload, Message, Event
@@ -19,6 +19,7 @@ from .forms import UploadFileForm
 
 from django.contrib import messages
 
+import qrcode
 
 image_manager = ImageManager()
 
@@ -100,6 +101,16 @@ class EventList(ListView):
     template_name = 'event_list.haml'
     model = Event
 
+    def dispatch(self, *args, **kwargs):
+
+        if self.request.user and self.request.user.is_superuser:
+            return super().dispatch(*args, **kwargs)
+        else:
+
+            event = Event.objects.filter(active=True).order_by('-id').first()
+            if event is None:
+                return HttpResponseNotFound('<h1>Page not found</h1>')
+            return HttpResponseRedirect(reverse('snapit_upload', args=[str(event.uuid)]))
 
 class UploadView(FormView):
     template_name = 'upload.haml'
@@ -131,5 +142,18 @@ class UploadView(FormView):
 
 class ViewImages(TemplateView):
     template_name = 'viewer.haml'
+
+
+class QRCodeView(View):
+
+    def get(self, *args, **kwargs):
+
+        eventuuid = kwargs.get('eventuuid')
+        url = self.request.build_absolute_uri(reverse('snapit_upload', args=(eventuuid,)))
+
+        img = qrcode.make(url, border=1)
+        response = HttpResponse(content_type="image/png")
+        img.save(response, "PNG")
+        return response
 
 

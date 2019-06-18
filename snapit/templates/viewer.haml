@@ -1,6 +1,9 @@
 {%extends '__base.haml' %}
 {% load staticfiles %}
 -block 'content'
+    .qr
+        %img{src:"{%url 'snapid_qr' eventuuid%}"}
+
     .image-container
         %img{src:"", data-adaptive-background:"", }
 
