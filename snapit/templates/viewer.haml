@@ -3,12 +3,15 @@
 -block 'content'
     .image-container
         %img{src:"", data-adaptive-background:"", }
+
+
     .message
+
 
 
     :javascript
         var interval = 5000;
-        var url = '{%url 'snapit_last_picture' %}'
+        var url = '{%url 'snapit_last_picture' eventuuid %}'
         var image = ''
         var message = $('.message').hide()
         var imageinterval;

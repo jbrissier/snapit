@@ -1,7 +1,7 @@
 {%extends '__l_base.haml' %}
 {% load staticfiles %}
 -block 'title'
-    SnapIt - Wall
+    SnapIt - {{event.name}}
 
 /example usage
 -block 'main-col'
@@ -24,8 +24,8 @@
         .col-lg-2.col-lg-offset-5.well.col-xs-10.col-xs-offset-1
              %form{action:'{%url "snapit_upload" eventuuid %}', method:'POST', enctype:"multipart/form-data"}
                 //{{form.as_p}}
-                {% csrf_token %}
                 %input{type:'file', accept:'image/*',  name:'{{form.file.html_name}}', id:'{{form.file.id_for_label}}'}
+                {% csrf_token %}
 
             %a#upload.btn.btn-block.form-control{href:'#'}
                     Bilder hinzufügen
