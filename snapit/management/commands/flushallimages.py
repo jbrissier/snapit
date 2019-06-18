@@ -6,4 +6,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         ImageUpload.objects.all().delete()
-        print "all images deleted"
+        print("all images deleted")
