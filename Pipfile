@@ -10,6 +10,7 @@ django-constance = {extras = ["database"], version = "*"}
 django-compressor = "*"
 pillow = "*"
 django-hamlpy = "*"
+qrcode = {extras = ["pil"], version = "*"}
 
 [dev-packages]
 
