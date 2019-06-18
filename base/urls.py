@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
 
-from snapit.views import ViewImages, get_latest_picture, LatesImage, UploadView,EventList
+from snapit.views import ViewImages, get_latest_picture, LatesImage, UploadView, EventList, QRCodeView
 
 admin.autodiscover()
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path(r'view/image/$', get_latest_picture, name="snapit_picture"),
     path('view/last/<uuid:eventuuid>/', LatesImage.as_view(), name="snapit_last_picture"),
     path('view/<uuid:eventuuid>/', ViewImages.as_view(), name="snapid_view"),
+    path('qr/<uuid:eventuuid>/', QRCodeView.as_view(), name="snapid_qr"),
     path('admin/', admin.site.urls),
 ]
 
