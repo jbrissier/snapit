@@ -7,6 +7,10 @@ import uuid
 class Event(models.Model):
     name = models.CharField(max_length=100)
     uuid = models.UUIDField(default=uuid.uuid4)
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
     def get_eventuuid(self):
         return str(self.uuid)
