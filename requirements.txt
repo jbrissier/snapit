@@ -1,16 +1,16 @@
--i https://pypi.org/simple
+-i https://pypi.org/simple/
 django-appconf==1.0.3
 django-compressor==2.3
 django-constance[database]==2.4.0
 django-hamlpy==1.2
-django-picklefield==2.0 ; extra == 'database'
+django-picklefield==2.0
 django==2.2.2
 djangorestframework==3.9.4
-pillow==6.0.0
-pytz==2019.1
+pillow==6.2.0
+pytz==2019.3
 qrcode[pil]==6.1
 rcssmin==1.0.6
-regex==2019.6.8
+regex==2019.8.19
 rjsmin==1.1.0
 six==1.12.0
 sqlparse==0.3.0
