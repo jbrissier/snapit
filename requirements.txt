@@ -6,7 +6,7 @@ django-hamlpy==1.2
 django-picklefield==2.0
 django==2.2.8
 djangorestframework==3.9.4
-pillow==6.2.0
+pillow==9.3.0
 pytz==2019.3
 qrcode[pil]==6.1
 rcssmin==1.0.6
